@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink: #ffb3d9;
+            --dark-pink: #ff6b9d;
+            --red: #ff5e78;
+            --cream: #fff5f7;
+            --text: #4a2c2a;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffb3d9 50%, #ffa8d5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.4;
+            font-size: 1.5rem;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        /* Page 1: Typing Animation */
+        .page {
+            display: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .typing-text {
+            font-size: 2.5rem;
+            line-height: 1.8;
+            color: white;
+            text-align: center;
+            min-height: 100px;
+            font-weight: 600;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .line {
+            opacity: 0;
+            display: block;
+        }
+
+        .line.show {
+            animation: lineAppear 0.6s ease-out forwards;
+        }
+
+        .line.hide {
+            animation: lineDisappear 0.6s ease-out forwards;
+        }
+
+        @keyframes lineAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes lineDisappear {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.5rem;
+            background: var(--dark-pink);
+            margin-left: 4px;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 49% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 0;
+            }
+        }
+
+        /* Page 2: Question */
+        .question-container {
+            text-align: center;
+        }
+
+        .question-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: var(--red);
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: bounce 1s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .cute-image {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: sway 2s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+            0%, 100% {
+                transform: rotate(-5deg);
+            }
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff5e78 100%);
+            color: white;
+            transform-origin: center;
+        }
+
+        .btn-yes.pulse {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.05);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        .btn-no {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-no:hover {
+            background: #d0d0d0;
+        }
+
+        /* Page 3: Letter */
+        .letter-page {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .envelope {
+            background: var(--red);
+            padding: 3rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(255, 94, 120, 0.4);
+            animation: envelopeOpen 1s ease-out;
+        }
+
+        @keyframes envelopeOpen {
+            0% {
+                transform: scale(0.8) rotateX(-90deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        .letter {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .letter-hearts {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 2.5rem;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .letter-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: var(--red);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .letter-content {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .celebration {
+            text-align: center;
+            font-size: 3rem;
+            margin-top: 2rem;
+            animation: celebrate 1s ease-out infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.2) rotate(-10deg);
+            }
+            75% {
+                transform: scale(1.2) rotate(10deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .typing-text {
+                font-size: 1.5rem;
+            }
+
+            .question-title {
+                font-size: 2.5rem;
+            }
+
+            .cute-image {
+                font-size: 5rem;
+            }
+
+            .btn {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+            }
+
+            .letter-title {
+                font-size: 2rem;
+            }
+
+            .letter-content {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Page 4: Flowers */
+        .flowers-container {
+            text-align: center;
+            width: 100%;
+        }
+
+        .flowers-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: white;
+            margin-bottom: 3rem;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flowers-garden {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .flower-image {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            animation: bounceIn 1.5s ease-out;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-100px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05) translateY(10px);
+            }
+            70% {
+                transform: scale(0.95) translateY(-5px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .flowers-message {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 600;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out 1.5s both;
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+
+        @media (max-width: 768px) {
+            .flower-image {
+                max-width: 90%;
+            }
+            
+            .flowers-title {
+                font-size: 3rem;
+            }
+            
+            .flowers-message {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+
+    <!-- Page 1: Typing Animation -->
+    <div class="page active" id="page1">
+        <div class="typing-container">
+            <div class="typing-text" id="typingText"></div>
+        </div>
+    </div>
+
+    <!-- Page 2: Question -->
+    <div class="page" id="page2">
+        <div class="question-container">
+            <div class="cute-image">🥺💕</div>
+            <h1 class="question-title">Will you be my Valentine?</h1>
+            <div class="buttons-container">
+                <button class="btn btn-yes pulse" id="btnYes">Yes! 💖</button>
+                <button class="btn btn-no" id="btnNo">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: Letter -->
+    <div class="page" id="page3">
+        <div class="letter-page">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="letter-hearts">💝💕</div>
+                    <h2 class="letter-title">Yip Yip Hooray 🎉</h2>
+                    <div class="letter-content">
+                        <p>I am so glad you chose this option first, right?</p>
+                        <p>Im so sorry for this being the only gift i could get you, i would have ordered flowers to your house but yk your circumstances</p>
+                        <p>Thank you for putting up with my BS day to day and being so perfect</p>
+                        <p style="font-family: 'Pacifico', cursive; color: var(--red); font-size: 1.5rem; margin-top: 2rem;">
+                            I love you baby,<br>
+                            Big Boss
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: Flowers -->
+    <div class="page" id="page4">
+        <div class="flowers-container">
+            <h1 class="flowers-title">Flowers heh...</h1>
+            <div class="flowers-garden">
+                <img src="flower hold.jpg" alt="Flowers for you!" class="flower-image">
+            </div>
+            <p class="flowers-message">Flowers for you! pretend these are pink lillies or Orchids okay? love you!</p>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        const heartsBg = document.getElementById('heartsBg');
+        const heartSymbols = ['❤️', '💕', '💖', '💗', '💝'];
+        
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartsBg.appendChild(heart);
+        }
+
+        // Page 1: Typing animation
+        const lines = [
+            "Hey Mimi",
+            "So yk how far away we are from eachother",
+            "I just wanna ask!",
+            "Better hold onto your socks"
+        ];
+
+        const typingText = document.getElementById('typingText');
+        let currentLineSpan = null;
+
+        async function typeLine(text) {
+            // Create new line
+            const lineSpan = document.createElement('span');
+            lineSpan.className = 'line';
+            typingText.appendChild(lineSpan);
+            
+            // Show it
+            setTimeout(() => lineSpan.classList.add('show'), 100);
+            
+            // Type out the text
+            for (let i = 0; i < text.length; i++) {
+                lineSpan.textContent += text[i];
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            
+            // Wait a moment
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Hide it
+            lineSpan.classList.remove('show');
+            lineSpan.classList.add('hide');
+            
+            // Wait for fade out
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            // Remove from DOM
+            lineSpan.remove();
+        }
+
+        async function startTyping() {
+            for (let i = 0; i < lines.length; i++) {
+                await typeLine(lines[i]);
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            showPage('page2');
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Page 2: Button interactions
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        let noClickCount = 0;
+
+        btnNo.addEventListener('click', () => {
+            noClickCount++;
+            
+            // Remove pulse animation from Yes button
+            btnYes.classList.remove('pulse');
+            
+            // Make "Yes" button bigger
+            const newSize = 1 + (noClickCount * 0.3);
+            btnYes.style.transform = `scale(${newSize})`;
+        });
+
+        btnYes.addEventListener('click', () => {
+            // Confetti effect
+            createConfetti();
+            setTimeout(() => {
+                showPage('page3');
+                // After letter, show flowers
+                setTimeout(() => {
+                    showPage('page4');
+                }, 8000); // Show letter for 8 seconds then flowers
+            }, 1000);
+        });
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-50px';
+                confetti.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                confetti.style.zIndex = '1000';
+                confetti.style.pointerEvents = 'none';
+                document.body.appendChild(confetti);
+                
+                const duration = Math.random() * 3 + 2;
+                const endX = (Math.random() - 0.5) * 200;
+                
+                confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight + 100}px) translateX(${endX}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                
+                setTimeout(() => confetti.remove(), duration * 1000);
+            }
+        }
+
+        // Add shake animation for no button
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start the experience
+        startTyping();
+    </script>
+</body>
+</html>
